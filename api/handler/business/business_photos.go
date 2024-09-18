@@ -16,10 +16,10 @@ import (
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Param Create body pb.CreateBusinessPhotosRequest true "Create"
+// @Param Create body pb.CreatePhotos true "Create"
 // @Success 201 {object} string "Success"
 // @Failure 400 {string} string "Error"
-// @Router /business-photos [post]
+// @Router /business-photo [post]
 func (h *BusinessHandler) CreateBusinessPhotos(ctx *gin.Context) {
 	req := &pb.CreateBusinessPhotosRequest{}
 	if err := ctx.BindJSON(req); err != nil {
@@ -46,10 +46,10 @@ func (h *BusinessHandler) CreateBusinessPhotos(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Param Update body pb.UpdateBusinessPhotosRequest true "Update"
+// @Param Update body pb.UpdatePhotos true "Update"
 // @Success 200 {object} string "Success"
 // @Failure 400 {string} string "Error"
-// @Router /business-photos [put]
+// @Router /business-photo [put]
 func (h *BusinessHandler) UpdateBusinessPhotos(ctx *gin.Context) {
 	req := &pb.UpdateBusinessPhotosRequest{}
 	if err := ctx.BindJSON(req); err != nil {
@@ -79,7 +79,7 @@ func (h *BusinessHandler) UpdateBusinessPhotos(ctx *gin.Context) {
 // @Param id path string true "Photo ID"
 // @Success 200 {object} string "Success"
 // @Failure 400 {string} string "Error"
-// @Router /business-photos/{id} [delete]
+// @Router /business-photo/{id} [delete]
 func (h *BusinessHandler) DeleteBusinessPhotos(ctx *gin.Context) {
 	req := &pb.DeleteBusinessPhotosRequest{}
 	req.Id = ctx.Param("id")
@@ -106,7 +106,7 @@ func (h *BusinessHandler) DeleteBusinessPhotos(ctx *gin.Context) {
 // @Param businessId path string true "Business ID"
 // @Success 200 {object} pb.GetBusinessIdResponse
 // @Failure 400 {string} string "Error"
-// @Router /business-photos/{businessId} [get]
+// @Router /business-photo/{businessId} [get]
 func (h *BusinessHandler) GetByBusinessId(ctx *gin.Context) {
 	req := &pb.GetBusinessIdRequest{}
 	req.BusinessId = ctx.Param("businessId")
@@ -120,27 +120,3 @@ func (h *BusinessHandler) GetByBusinessId(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, resp)
 }
 
-// @Summary Get Business Photos by Owner
-// @Description Get all photos uploaded by the current user (owner)
-// @Tags Business Photos
-// @Accept json
-// @Produce json
-// @Security BearerAuth
-// @Success 200 {object} pb.GetBusinessPhotosByOwnerResponse
-// @Failure 400 {string} string "Error"
-// @Router /business-photos/owner [get]
-func (h *BusinessHandler) GetBusinessPhotosByOwner(ctx *gin.Context) {
-	req := &pb.GetBusinessPhotosByOwnerRequest{}
-
-	c := config.Load()
-	id, _ := token.GetIdFromToken(ctx.Request, &c)
-	req.OwnerId = id
-
-	resp, err := h.BusinessPhotos.GetBusinessPhotosByOwner(context.Background(), req)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err.Error())
-		return
-	}
-
-	ctx.JSON(http.StatusOK, resp)
-}

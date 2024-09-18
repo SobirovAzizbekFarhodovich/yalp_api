@@ -7,7 +7,7 @@
     p, admin, /bookmarked-business, POST
     p, admin, /bookmarked-business/:id, DELETE
     p, admin, /bookmarked-business/:id, GET
-    p, admin, /bookmarked-business/all, GET
+    p, admin, /bookmarked-business, GET
 
     p, admin, /business-photo, POST
     p, admin, /business-photo/:id, DELETE

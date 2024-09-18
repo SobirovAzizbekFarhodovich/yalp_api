@@ -37,7 +37,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/genprotos.GetAllBookmarkedBusResponse"
+                            "$ref": "#/definitions/genprotos.GetAllBookmarkedBusinessResponse"
                         }
                     },
                     "400": {
@@ -72,7 +72,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/genprotos.CreateBookmarkedBusRequest"
+                            "$ref": "#/definitions/genprotos.CreateBookmarked"
                         }
                     }
                 ],
@@ -123,7 +123,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/genprotos.GetBookmarkedBusByIdResponse"
+                            "$ref": "#/definitions/genprotos.GetBookmarkedBusinessByIdResponse"
                         }
                     },
                     "400": {
@@ -183,7 +183,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Create Business",
+                "description": "Create a new business entry",
                 "consumes": [
                     "application/json"
                 ],
@@ -196,12 +196,12 @@ const docTemplate = `{
                 "summary": "Create Business",
                 "parameters": [
                     {
-                        "description": "Create",
+                        "description": "Create Business",
                         "name": "Create",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/genprotos.CreateBusinessRequest"
+                            "$ref": "#/definitions/genprotos.CreateBusiness"
                         }
                     }
                 ],
@@ -209,7 +209,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Success",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/genprotos.CreateBusinessResponse"
                         }
                     },
                     "400": {
@@ -221,7 +221,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/business-photos": {
+        "/business-photo": {
             "put": {
                 "security": [
                     {
@@ -246,7 +246,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/genprotos.UpdateBusinessPhotosRequest"
+                            "$ref": "#/definitions/genprotos.UpdatePhotos"
                         }
                     }
                 ],
@@ -289,7 +289,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/genprotos.CreateBusinessPhotosRequest"
+                            "$ref": "#/definitions/genprotos.CreatePhotos"
                         }
                     }
                 ],
@@ -309,41 +309,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/business-photos/owner": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Get all photos uploaded by the current user (owner)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Business Photos"
-                ],
-                "summary": "Get Business Photos by Owner",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/genprotos.GetBusinessPhotosByOwnerResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/business-photos/{businessId}": {
+        "/business-photo/{businessId}": {
             "get": {
                 "security": [
                     {
@@ -386,7 +352,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/business-photos/{id}": {
+        "/business-photo/{id}": {
             "delete": {
                 "security": [
                     {
@@ -431,6 +397,11 @@ const docTemplate = `{
         },
         "/business/all": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get All Businesses",
                 "consumes": [
                     "application/json"
@@ -448,6 +419,42 @@ const docTemplate = `{
                         "default": 1,
                         "description": "Page number",
                         "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Business name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Average ratings",
+                        "name": "average_ratings",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Category",
+                        "name": "category",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Contact info",
+                        "name": "contact_info",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Hours of operation",
+                        "name": "hours_of_operation",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Owner ID",
+                        "name": "owner_id",
                         "in": "query"
                     }
                 ],
@@ -469,6 +476,11 @@ const docTemplate = `{
         },
         "/business/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get Business by ID",
                 "consumes": [
                     "application/json"
@@ -510,7 +522,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Update Business",
+                "description": "Update an existing business entry",
                 "consumes": [
                     "application/json"
                 ],
@@ -530,12 +542,12 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Update",
+                        "description": "Update Business",
                         "name": "Update",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/genprotos.UpdateBusinessRequest"
+                            "$ref": "#/definitions/genprotos.UpdateBusiness"
                         }
                     }
                 ],
@@ -543,7 +555,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/genprotos.UpdateBusinessResponse"
                         }
                     },
                     "400": {
@@ -603,7 +615,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Get a paginated list of locations",
+                "description": "Get a paginated list of locations. If 'page' is not provided, it defaults to 1.",
                 "consumes": [
                     "application/json"
                 ],
@@ -617,10 +629,10 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
+                        "default": 1,
                         "description": "Page number",
                         "name": "page",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -791,7 +803,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/genprotos.CreateReviewRequest"
+                            "$ref": "#/definitions/genprotos.CreateReview"
                         }
                     }
                 ],
@@ -852,7 +864,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Retrieve all reviews for a specific business",
+                "description": "Retrieve all reviews for a specific business. If 'page' is not provided, it defaults to 1.",
                 "consumes": [
                     "application/json"
                 ],
@@ -870,6 +882,13 @@ const docTemplate = `{
                         "name": "business_id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -913,7 +932,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/genprotos.UpdateReviewRequest"
+                            "$ref": "#/definitions/genprotos.CreateReview"
                         }
                     }
                 ],
@@ -984,32 +1003,15 @@ const docTemplate = `{
                 }
             }
         },
-        "genprotos.CreateBookmarkedBusRequest": {
+        "genprotos.CreateBookmarked": {
             "type": "object",
             "properties": {
                 "business_id": {
                     "type": "string"
-                },
-                "user_id": {
-                    "type": "string"
                 }
             }
         },
-        "genprotos.CreateBusinessPhotosRequest": {
-            "type": "object",
-            "properties": {
-                "business_id": {
-                    "type": "string"
-                },
-                "owner_id": {
-                    "type": "string"
-                },
-                "photo_url": {
-                    "type": "string"
-                }
-            }
-        },
-        "genprotos.CreateBusinessRequest": {
+        "genprotos.CreateBusiness": {
             "type": "object",
             "properties": {
                 "category": {
@@ -1029,11 +1031,11 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
-                },
-                "owner_id": {
-                    "type": "string"
                 }
             }
+        },
+        "genprotos.CreateBusinessResponse": {
+            "type": "object"
         },
         "genprotos.CreateLocationRequest": {
             "type": "object",
@@ -1057,7 +1059,18 @@ const docTemplate = `{
                 }
             }
         },
-        "genprotos.CreateReviewRequest": {
+        "genprotos.CreatePhotos": {
+            "type": "object",
+            "properties": {
+                "business_id": {
+                    "type": "string"
+                },
+                "photo_url": {
+                    "type": "string"
+                }
+            }
+        },
+        "genprotos.CreateReview": {
             "type": "object",
             "properties": {
                 "business_id": {
@@ -1068,22 +1081,19 @@ const docTemplate = `{
                 },
                 "text": {
                     "type": "string"
-                },
-                "user_id": {
-                    "type": "string"
                 }
             }
         },
         "genprotos.CreateReviewResponse": {
             "type": "object"
         },
-        "genprotos.GetAllBookmarkedBusResponse": {
+        "genprotos.GetAllBookmarkedBusinessResponse": {
             "type": "object",
             "properties": {
                 "businesses": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/genprotos.GetBookmarkedBusByIdResponse"
+                        "$ref": "#/definitions/genprotos.GetBookmarkedBusinessByIdResponse"
                     }
                 }
             }
@@ -1110,7 +1120,7 @@ const docTemplate = `{
                 }
             }
         },
-        "genprotos.GetBookmarkedBusByIdResponse": {
+        "genprotos.GetBookmarkedBusinessByIdResponse": {
             "type": "object",
             "properties": {
                 "business_id": {
@@ -1141,17 +1151,6 @@ const docTemplate = `{
                 }
             }
         },
-        "genprotos.GetBusinessPhotosByOwnerResponse": {
-            "type": "object",
-            "properties": {
-                "photos": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/genprotos.GetBusinessIdResponse"
-                    }
-                }
-            }
-        },
         "genprotos.GetByIdBusinessResponse": {
             "type": "object",
             "properties": {
@@ -1172,6 +1171,9 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "string"
+                },
+                "location": {
+                    "$ref": "#/definitions/genprotos.Location"
                 },
                 "location_id": {
                     "type": "string"
@@ -1223,21 +1225,24 @@ const docTemplate = `{
                 }
             }
         },
-        "genprotos.UpdateBusinessPhotosRequest": {
+        "genprotos.Location": {
             "type": "object",
             "properties": {
-                "business_id": {
+                "address": {
                     "type": "string"
                 },
-                "owner_id": {
+                "id": {
                     "type": "string"
                 },
-                "photo_url": {
-                    "type": "string"
+                "latitude": {
+                    "type": "number"
+                },
+                "longitude": {
+                    "type": "number"
                 }
             }
         },
-        "genprotos.UpdateBusinessRequest": {
+        "genprotos.UpdateBusiness": {
             "type": "object",
             "properties": {
                 "category": {
@@ -1252,7 +1257,27 @@ const docTemplate = `{
                 "hours_of_operation": {
                     "type": "string"
                 },
-                "id": {
+                "location_id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "genprotos.UpdateBusinessResponse": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "contact_info": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "hours_of_operation": {
                     "type": "string"
                 },
                 "location_id": {
@@ -1262,6 +1287,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "owner_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "genprotos.UpdatePhotos": {
+            "type": "object",
+            "properties": {
+                "business_id": {
+                    "type": "string"
+                },
+                "photo_url": {
                     "type": "string"
                 }
             }

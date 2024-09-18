@@ -82,20 +82,27 @@ func (h *BusinessHandler) GetLocationById(ctx *gin.Context) {
 }
 
 // @Summary Get All Locations
-// @Description Get a paginated list of locations
+// @Description Get a paginated list of locations. If 'page' is not provided, it defaults to 1.
 // @Tags Locations
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Param page query int true "Page number"
+// @Param page query int false "Page number" default(1)
 // @Success 200 {object} pb.GetAllLocationResponse
 // @Failure 400 {string} string "Error"
 // @Router /location [get]
 func (h *BusinessHandler) GetAllLocations(ctx *gin.Context) {
-	req := &pb.GetAllLocationRequest{}
+	pageStr := ctx.DefaultQuery("page", "1")
 
-	page, _ := strconv.Atoi(ctx.Query("page"))
-	req.Page = int32(page)
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || page <= 0 {
+		ctx.JSON(http.StatusBadRequest, "Invalid page number")
+		return
+	}
+
+	req := &pb.GetAllLocationRequest{
+		Page: int32(page),
+	}
 
 	resp, err := h.Location.GetAllLocations(context.Background(), req)
 	if err != nil {

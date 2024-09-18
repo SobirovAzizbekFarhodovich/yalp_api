@@ -6,6 +6,7 @@ import (
 	pb "api/genprotos/business"
 	"context"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,7 +17,7 @@ import (
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Param Create body pb.CreateReviewRequest true "Create Review"
+// @Param Create body pb.CreateReview true "Create Review"
 // @Success 201 {object} pb.CreateReviewResponse "Success"
 // @Failure 400 {string} string "Error"
 // @Router /review [post]
@@ -26,14 +27,17 @@ func (h *BusinessHandler) CreateReview(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
+	c := config.Load()
+	id, _ := token.GetIdFromToken(ctx.Request, &c)
+	req.UserId = id
 
-	resp, err := h.Review.CreateReview(context.Background(), req)
+	_, err := h.Review.CreateReview(context.Background(), req)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, resp)
+	ctx.JSON(http.StatusCreated, gin.H{"message": "Review create successfully"})
 }
 
 // @Summary Update Review
@@ -42,7 +46,7 @@ func (h *BusinessHandler) CreateReview(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Param Update body pb.UpdateReviewRequest true "Update Review"
+// @Param Update body pb.CreateReview true "Update Review"
 // @Success 200 {object} pb.UpdateReviewResponse "Success"
 // @Failure 400 {string} string "Error"
 // @Router /review/{id} [put]
@@ -110,18 +114,29 @@ func (h *BusinessHandler) GetOwnReviews(ctx *gin.Context) {
 }
 
 // @Summary Get Reviews by Business ID
-// @Description Retrieve all reviews for a specific business
+// @Description Retrieve all reviews for a specific business. If 'page' is not provided, it defaults to 1.
 // @Tags Reviews
 // @Accept json
 // @Produce json
 // @Security BearerAuth
 // @Param business_id path string true "Business ID"
+// @Param page query int false "Page number" default(1)
 // @Success 200 {object} pb.GetReviewByBusinessIdResponse "Success"
 // @Failure 400 {string} string "Error"
 // @Router /review/{business_id} [get]
 func (h *BusinessHandler) GetReviewByBusinessId(ctx *gin.Context) {
 	req := &pb.GetReviewByBusinessIdRequest{}
+
 	req.BusinessId = ctx.Param("business_id")
+	pageStr := ctx.DefaultQuery("page", "1")
+
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || page <= 0 {
+		ctx.JSON(http.StatusBadRequest, "Invalid page number")
+		return
+	}
+
+	req.Page = int32(page)
 
 	resp, err := h.Review.GetReviewByBusinessId(context.Background(), req)
 	if err != nil {

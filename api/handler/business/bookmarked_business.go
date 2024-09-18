@@ -16,12 +16,12 @@ import (
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Param Create body pb.CreateBookmarkedBusRequest true "Create"
+// @Param Create body pb.CreateBookmarked true "Create"
 // @Success 201 {object} string "Success"
 // @Failure 400 {string} string "Error"
 // @Router /bookmarked-business [post]
 func (h *BusinessHandler) CreateBookmarkedBus(ctx *gin.Context) {
-	req := &pb.CreateBookmarkedBusRequest{}
+	req := &pb.CreateBookmarkedBusinessRequest{}
 	if err := ctx.BindJSON(req); err != nil {
 		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
@@ -51,7 +51,7 @@ func (h *BusinessHandler) CreateBookmarkedBus(ctx *gin.Context) {
 // @Failure 400 {string} string "Error"
 // @Router /bookmarked-business/{id} [delete]
 func (h *BusinessHandler) DeleteBookmarkedBus(ctx *gin.Context) {
-	req := &pb.DeleteBookmarkedBusRequest{}
+	req := &pb.DeleteBookmarkedBusinessRequest{}
 	req.Id = ctx.Param("id")
 
 	c := config.Load()
@@ -74,11 +74,11 @@ func (h *BusinessHandler) DeleteBookmarkedBus(ctx *gin.Context) {
 // @Produce json
 // @Security BearerAuth
 // @Param id path string true "Bookmark ID"
-// @Success 200 {object} pb.GetBookmarkedBusByIdResponse
+// @Success 200 {object} pb.GetBookmarkedBusinessByIdResponse
 // @Failure 400 {string} string "Error"
 // @Router /bookmarked-business/{id} [get]
 func (h *BusinessHandler) GetBookmarkedBusById(ctx *gin.Context) {
-	req := &pb.GetBookmarkedBusByIdRequest{}
+	req := &pb.GetBookmarkedBusinessByIdRequest{}
 	req.Id = ctx.Param("id")
 
 	c := config.Load()
@@ -100,11 +100,11 @@ func (h *BusinessHandler) GetBookmarkedBusById(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Success 200 {object} pb.GetAllBookmarkedBusResponse
+// @Success 200 {object} pb.GetAllBookmarkedBusinessResponse
 // @Failure 400 {string} string "Error"
 // @Router /bookmarked-business [get]
 func (h *BusinessHandler) GetAllBookmarkedBus(ctx *gin.Context) {
-	req := &pb.GetAllBookmarkedBusRequest{}
+	req := &pb.GetAllBookmarkedBusinessRequest{}
 
 	c := config.Load()
 	id, _ := token.GetIdFromToken(ctx.Request, &c)

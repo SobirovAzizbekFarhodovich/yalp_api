@@ -5,23 +5,12 @@ definitions:
       photo_url:
         type: string
     type: object
-  genprotos.CreateBookmarkedBusRequest:
+  genprotos.CreateBookmarked:
     properties:
       business_id:
         type: string
-      user_id:
-        type: string
     type: object
-  genprotos.CreateBusinessPhotosRequest:
-    properties:
-      business_id:
-        type: string
-      owner_id:
-        type: string
-      photo_url:
-        type: string
-    type: object
-  genprotos.CreateBusinessRequest:
+  genprotos.CreateBusiness:
     properties:
       category:
         type: string
@@ -35,8 +24,8 @@ definitions:
         type: string
       name:
         type: string
-      owner_id:
-        type: string
+    type: object
+  genprotos.CreateBusinessResponse:
     type: object
   genprotos.CreateLocationRequest:
     properties:
@@ -52,7 +41,14 @@ definitions:
       id:
         type: string
     type: object
-  genprotos.CreateReviewRequest:
+  genprotos.CreatePhotos:
+    properties:
+      business_id:
+        type: string
+      photo_url:
+        type: string
+    type: object
+  genprotos.CreateReview:
     properties:
       business_id:
         type: string
@@ -60,16 +56,14 @@ definitions:
         type: integer
       text:
         type: string
-      user_id:
-        type: string
     type: object
   genprotos.CreateReviewResponse:
     type: object
-  genprotos.GetAllBookmarkedBusResponse:
+  genprotos.GetAllBookmarkedBusinessResponse:
     properties:
       businesses:
         items:
-          $ref: '#/definitions/genprotos.GetBookmarkedBusByIdResponse'
+          $ref: '#/definitions/genprotos.GetBookmarkedBusinessByIdResponse'
         type: array
     type: object
   genprotos.GetAllBusinessesResponse:
@@ -86,7 +80,7 @@ definitions:
           $ref: '#/definitions/genprotos.GetLocationByIdResponse'
         type: array
     type: object
-  genprotos.GetBookmarkedBusByIdResponse:
+  genprotos.GetBookmarkedBusinessByIdResponse:
     properties:
       business_id:
         type: string
@@ -106,13 +100,6 @@ definitions:
           $ref: '#/definitions/genprotos.Business'
         type: array
     type: object
-  genprotos.GetBusinessPhotosByOwnerResponse:
-    properties:
-      photos:
-        items:
-          $ref: '#/definitions/genprotos.GetBusinessIdResponse'
-        type: array
-    type: object
   genprotos.GetByIdBusinessResponse:
     properties:
       average_ratings:
@@ -127,6 +114,8 @@ definitions:
         type: string
       id:
         type: string
+      location:
+        $ref: '#/definitions/genprotos.Location'
       location_id:
         type: string
       name:
@@ -159,16 +148,18 @@ definitions:
           $ref: '#/definitions/genprotos.UpdateReviewRequest'
         type: array
     type: object
-  genprotos.UpdateBusinessPhotosRequest:
+  genprotos.Location:
     properties:
-      business_id:
+      address:
         type: string
-      owner_id:
+      id:
         type: string
-      photo_url:
-        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
     type: object
-  genprotos.UpdateBusinessRequest:
+  genprotos.UpdateBusiness:
     properties:
       category:
         type: string
@@ -178,13 +169,33 @@ definitions:
         type: string
       hours_of_operation:
         type: string
-      id:
+      location_id:
+        type: string
+      name:
+        type: string
+    type: object
+  genprotos.UpdateBusinessResponse:
+    properties:
+      category:
+        type: string
+      contact_info:
+        type: string
+      description:
+        type: string
+      hours_of_operation:
         type: string
       location_id:
         type: string
       name:
         type: string
       owner_id:
+        type: string
+    type: object
+  genprotos.UpdatePhotos:
+    properties:
+      business_id:
+        type: string
+      photo_url:
         type: string
     type: object
   genprotos.UpdateReviewRequest:
@@ -231,7 +242,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/genprotos.GetAllBookmarkedBusResponse'
+            $ref: '#/definitions/genprotos.GetAllBookmarkedBusinessResponse'
         "400":
           description: Error
           schema:
@@ -251,7 +262,7 @@ paths:
         name: Create
         required: true
         schema:
-          $ref: '#/definitions/genprotos.CreateBookmarkedBusRequest'
+          $ref: '#/definitions/genprotos.CreateBookmarked'
       produces:
       - application/json
       responses:
@@ -311,7 +322,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/genprotos.GetBookmarkedBusByIdResponse'
+            $ref: '#/definitions/genprotos.GetBookmarkedBusinessByIdResponse'
         "400":
           description: Error
           schema:
@@ -325,21 +336,21 @@ paths:
     post:
       consumes:
       - application/json
-      description: Create Business
+      description: Create a new business entry
       parameters:
-      - description: Create
+      - description: Create Business
         in: body
         name: Create
         required: true
         schema:
-          $ref: '#/definitions/genprotos.CreateBusinessRequest'
+          $ref: '#/definitions/genprotos.CreateBusiness'
       produces:
       - application/json
       responses:
         "201":
           description: Success
           schema:
-            type: string
+            $ref: '#/definitions/genprotos.CreateBusinessResponse'
         "400":
           description: Error
           schema:
@@ -349,7 +360,7 @@ paths:
       summary: Create Business
       tags:
       - Business
-  /business-photos:
+  /business-photo:
     post:
       consumes:
       - application/json
@@ -360,7 +371,7 @@ paths:
         name: Create
         required: true
         schema:
-          $ref: '#/definitions/genprotos.CreateBusinessPhotosRequest'
+          $ref: '#/definitions/genprotos.CreatePhotos'
       produces:
       - application/json
       responses:
@@ -387,7 +398,7 @@ paths:
         name: Update
         required: true
         schema:
-          $ref: '#/definitions/genprotos.UpdateBusinessPhotosRequest'
+          $ref: '#/definitions/genprotos.UpdatePhotos'
       produces:
       - application/json
       responses:
@@ -404,7 +415,7 @@ paths:
       summary: Update Business Photo
       tags:
       - Business Photos
-  /business-photos/{businessId}:
+  /business-photo/{businessId}:
     get:
       consumes:
       - application/json
@@ -431,7 +442,7 @@ paths:
       summary: Get Business Photos by Business ID
       tags:
       - Business Photos
-  /business-photos/{id}:
+  /business-photo/{id}:
     delete:
       consumes:
       - application/json
@@ -456,27 +467,6 @@ paths:
       security:
       - BearerAuth: []
       summary: Delete Business Photo
-      tags:
-      - Business Photos
-  /business-photos/owner:
-    get:
-      consumes:
-      - application/json
-      description: Get all photos uploaded by the current user (owner)
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/genprotos.GetBusinessPhotosByOwnerResponse'
-        "400":
-          description: Error
-          schema:
-            type: string
-      security:
-      - BearerAuth: []
-      summary: Get Business Photos by Owner
       tags:
       - Business Photos
   /business/{id}:
@@ -527,32 +517,34 @@ paths:
           description: Error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Get Business by ID
       tags:
       - Business
     put:
       consumes:
       - application/json
-      description: Update Business
+      description: Update an existing business entry
       parameters:
       - description: Business ID
         in: path
         name: id
         required: true
         type: string
-      - description: Update
+      - description: Update Business
         in: body
         name: Update
         required: true
         schema:
-          $ref: '#/definitions/genprotos.UpdateBusinessRequest'
+          $ref: '#/definitions/genprotos.UpdateBusiness'
       produces:
       - application/json
       responses:
         "200":
           description: Success
           schema:
-            type: string
+            $ref: '#/definitions/genprotos.UpdateBusinessResponse'
         "400":
           description: Error
           schema:
@@ -573,6 +565,30 @@ paths:
         in: query
         name: page
         type: integer
+      - description: Business name
+        in: query
+        name: name
+        type: string
+      - description: Average ratings
+        in: query
+        name: average_ratings
+        type: number
+      - description: Category
+        in: query
+        name: category
+        type: string
+      - description: Contact info
+        in: query
+        name: contact_info
+        type: string
+      - description: Hours of operation
+        in: query
+        name: hours_of_operation
+        type: string
+      - description: Owner ID
+        in: query
+        name: owner_id
+        type: string
       produces:
       - application/json
       responses:
@@ -584,6 +600,8 @@ paths:
           description: Error
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Get All Businesses
       tags:
       - Business
@@ -591,12 +609,13 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get a paginated list of locations
+      description: Get a paginated list of locations. If 'page' is not provided, it
+        defaults to 1.
       parameters:
-      - description: Page number
+      - default: 1
+        description: Page number
         in: query
         name: page
-        required: true
         type: integer
       produces:
       - application/json
@@ -706,7 +725,7 @@ paths:
         name: Create
         required: true
         schema:
-          $ref: '#/definitions/genprotos.CreateReviewRequest'
+          $ref: '#/definitions/genprotos.CreateReview'
       produces:
       - application/json
       responses:
@@ -727,13 +746,19 @@ paths:
     get:
       consumes:
       - application/json
-      description: Retrieve all reviews for a specific business
+      description: Retrieve all reviews for a specific business. If 'page' is not
+        provided, it defaults to 1.
       parameters:
       - description: Business ID
         in: path
         name: business_id
         required: true
         type: string
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
       produces:
       - application/json
       responses:
@@ -787,7 +812,7 @@ paths:
         name: Update
         required: true
         schema:
-          $ref: '#/definitions/genprotos.UpdateReviewRequest'
+          $ref: '#/definitions/genprotos.CreateReview'
       produces:
       - application/json
       responses:
