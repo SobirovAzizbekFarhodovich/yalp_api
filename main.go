@@ -19,7 +19,7 @@ func main() {
 	}
 	defer authservice.Close()
 
-	companyService, err := grpc.NewClient(cnf.BUDGETING_PORT, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	companyService, err := grpc.NewClient("business_service"+cnf.BUDGETING_PORT, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("Failed to connect to learning service service %v", err)
 	}

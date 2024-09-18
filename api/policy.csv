@@ -4,20 +4,34 @@
     p, admin, /business/:id, GET
     p, admin, /business/all, GET
 
+    p, user, /business/:id, GET
+    p, user, /business/all, GET
+
     p, admin, /bookmarked-business, POST
     p, admin, /bookmarked-business/:id, DELETE
     p, admin, /bookmarked-business/:id, GET
     p, admin, /bookmarked-business, GET
+
+    p, user, /bookmarked-business, POST
+    p, user, /bookmarked-business/:id, DELETE
+    p, user, /bookmarked-business/:id, GET
+    p, user, /bookmarked-business, GET
 
     p, admin, /business-photo, POST
     p, admin, /business-photo/:id, DELETE
     p, admin, /business-photo/:businessId, GET
     p, admin, /business-photo/:id, GET
 
+    p, user, /business-photo/:businessId, GET
+    p, user, /business-photo/:id, GET
+
     p, admin, /location, POST
     p, admin, /location/:id, DELETE
     p, admin, /location, GET
     p, admin, /location/:id, GET
+
+    p, user, /location, GET
+    p, user, /location/:id, GET
 
 
     p, admin, /review, POST
@@ -26,6 +40,13 @@
     p, admin, /review/user/:user_id, GET
     p, admin, /review/:id, GET
     p, admin, /review/:business_id, GET
+
+    p, user, /review, POST
+    p, user, /review/:id, PUT
+    p, user, /review/:id, DELETE
+    p, user, /review/user/:user_id, GET
+    p, user, /review/:id, GET
+    p, user, /review/:business_id, GET
 
 
     p, unauthorized, /api/swagger/index.html, GET
