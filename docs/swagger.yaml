@@ -1,0 +1,833 @@
+basePath: /
+definitions:
+  genprotos.Business:
+    properties:
+      photo_url:
+        type: string
+    type: object
+  genprotos.CreateBookmarkedBusRequest:
+    properties:
+      business_id:
+        type: string
+      user_id:
+        type: string
+    type: object
+  genprotos.CreateBusinessPhotosRequest:
+    properties:
+      business_id:
+        type: string
+      owner_id:
+        type: string
+      photo_url:
+        type: string
+    type: object
+  genprotos.CreateBusinessRequest:
+    properties:
+      category:
+        type: string
+      contact_info:
+        type: string
+      description:
+        type: string
+      hours_of_operation:
+        type: string
+      location_id:
+        type: string
+      name:
+        type: string
+      owner_id:
+        type: string
+    type: object
+  genprotos.CreateLocationRequest:
+    properties:
+      address:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+    type: object
+  genprotos.CreateLocationResponse:
+    properties:
+      id:
+        type: string
+    type: object
+  genprotos.CreateReviewRequest:
+    properties:
+      business_id:
+        type: string
+      rating:
+        type: integer
+      text:
+        type: string
+      user_id:
+        type: string
+    type: object
+  genprotos.CreateReviewResponse:
+    type: object
+  genprotos.GetAllBookmarkedBusResponse:
+    properties:
+      businesses:
+        items:
+          $ref: '#/definitions/genprotos.GetBookmarkedBusByIdResponse'
+        type: array
+    type: object
+  genprotos.GetAllBusinessesResponse:
+    properties:
+      businesses:
+        items:
+          $ref: '#/definitions/genprotos.GetByIdBusinessResponse'
+        type: array
+    type: object
+  genprotos.GetAllLocationResponse:
+    properties:
+      locations:
+        items:
+          $ref: '#/definitions/genprotos.GetLocationByIdResponse'
+        type: array
+    type: object
+  genprotos.GetBookmarkedBusByIdResponse:
+    properties:
+      business_id:
+        type: string
+      id:
+        type: string
+      user_id:
+        type: string
+    type: object
+  genprotos.GetBusinessIdResponse:
+    properties:
+      business_id:
+        type: string
+      owner_id:
+        type: string
+      photos:
+        items:
+          $ref: '#/definitions/genprotos.Business'
+        type: array
+    type: object
+  genprotos.GetBusinessPhotosByOwnerResponse:
+    properties:
+      photos:
+        items:
+          $ref: '#/definitions/genprotos.GetBusinessIdResponse'
+        type: array
+    type: object
+  genprotos.GetByIdBusinessResponse:
+    properties:
+      average_ratings:
+        type: number
+      category:
+        type: string
+      contact_info:
+        type: string
+      description:
+        type: string
+      hours_of_operation:
+        type: string
+      id:
+        type: string
+      location_id:
+        type: string
+      name:
+        type: string
+      owner_id:
+        type: string
+    type: object
+  genprotos.GetLocationByIdResponse:
+    properties:
+      address:
+        type: string
+      id:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+    type: object
+  genprotos.GetOwnReviewsResponse:
+    properties:
+      reviews:
+        items:
+          $ref: '#/definitions/genprotos.UpdateReviewRequest'
+        type: array
+    type: object
+  genprotos.GetReviewByBusinessIdResponse:
+    properties:
+      reviews:
+        items:
+          $ref: '#/definitions/genprotos.UpdateReviewRequest'
+        type: array
+    type: object
+  genprotos.UpdateBusinessPhotosRequest:
+    properties:
+      business_id:
+        type: string
+      owner_id:
+        type: string
+      photo_url:
+        type: string
+    type: object
+  genprotos.UpdateBusinessRequest:
+    properties:
+      category:
+        type: string
+      contact_info:
+        type: string
+      description:
+        type: string
+      hours_of_operation:
+        type: string
+      id:
+        type: string
+      location_id:
+        type: string
+      name:
+        type: string
+      owner_id:
+        type: string
+    type: object
+  genprotos.UpdateReviewRequest:
+    properties:
+      business_id:
+        type: string
+      id:
+        type: string
+      rating:
+        type: integer
+      text:
+        type: string
+      user_id:
+        type: string
+    type: object
+  genprotos.UpdateReviewResponse:
+    properties:
+      business_id:
+        type: string
+      id:
+        type: string
+      rating:
+        type: integer
+      text:
+        type: string
+      user_id:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Developing a platform that helps users track their spending, set a
+    budget and manage their financial goals
+  title: Budgeting SYSTEM API
+  version: "1.0"
+paths:
+  /bookmarked-business:
+    get:
+      consumes:
+      - application/json
+      description: Get all bookmarked businesses for a user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/genprotos.GetAllBookmarkedBusResponse'
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get All Bookmarked Businesses
+      tags:
+      - Bookmarked Businesses
+    post:
+      consumes:
+      - application/json
+      description: Create a bookmarked business for a user
+      parameters:
+      - description: Create
+        in: body
+        name: Create
+        required: true
+        schema:
+          $ref: '#/definitions/genprotos.CreateBookmarkedBusRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create Bookmarked Business
+      tags:
+      - Bookmarked Businesses
+  /bookmarked-business/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a bookmarked business by ID
+      parameters:
+      - description: Bookmark ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete Bookmarked Business
+      tags:
+      - Bookmarked Businesses
+    get:
+      consumes:
+      - application/json
+      description: Get a specific bookmarked business by ID
+      parameters:
+      - description: Bookmark ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/genprotos.GetBookmarkedBusByIdResponse'
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get Bookmarked Business by ID
+      tags:
+      - Bookmarked Businesses
+  /business:
+    post:
+      consumes:
+      - application/json
+      description: Create Business
+      parameters:
+      - description: Create
+        in: body
+        name: Create
+        required: true
+        schema:
+          $ref: '#/definitions/genprotos.CreateBusinessRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create Business
+      tags:
+      - Business
+  /business-photos:
+    post:
+      consumes:
+      - application/json
+      description: Add a new photo for a business
+      parameters:
+      - description: Create
+        in: body
+        name: Create
+        required: true
+        schema:
+          $ref: '#/definitions/genprotos.CreateBusinessPhotosRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create Business Photo
+      tags:
+      - Business Photos
+    put:
+      consumes:
+      - application/json
+      description: Update an existing business photo
+      parameters:
+      - description: Update
+        in: body
+        name: Update
+        required: true
+        schema:
+          $ref: '#/definitions/genprotos.UpdateBusinessPhotosRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update Business Photo
+      tags:
+      - Business Photos
+  /business-photos/{businessId}:
+    get:
+      consumes:
+      - application/json
+      description: Get all photos for a specific business
+      parameters:
+      - description: Business ID
+        in: path
+        name: businessId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/genprotos.GetBusinessIdResponse'
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get Business Photos by Business ID
+      tags:
+      - Business Photos
+  /business-photos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a specific business photo by ID
+      parameters:
+      - description: Photo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete Business Photo
+      tags:
+      - Business Photos
+  /business-photos/owner:
+    get:
+      consumes:
+      - application/json
+      description: Get all photos uploaded by the current user (owner)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/genprotos.GetBusinessPhotosByOwnerResponse'
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get Business Photos by Owner
+      tags:
+      - Business Photos
+  /business/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Business
+      parameters:
+      - description: Business ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete Business
+      tags:
+      - Business
+    get:
+      consumes:
+      - application/json
+      description: Get Business by ID
+      parameters:
+      - description: Business ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/genprotos.GetByIdBusinessResponse'
+        "400":
+          description: Error
+          schema:
+            type: string
+      summary: Get Business by ID
+      tags:
+      - Business
+    put:
+      consumes:
+      - application/json
+      description: Update Business
+      parameters:
+      - description: Business ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update
+        in: body
+        name: Update
+        required: true
+        schema:
+          $ref: '#/definitions/genprotos.UpdateBusinessRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update Business
+      tags:
+      - Business
+  /business/all:
+    get:
+      consumes:
+      - application/json
+      description: Get All Businesses
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/genprotos.GetAllBusinessesResponse'
+        "400":
+          description: Error
+          schema:
+            type: string
+      summary: Get All Businesses
+      tags:
+      - Business
+  /location:
+    get:
+      consumes:
+      - application/json
+      description: Get a paginated list of locations
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/genprotos.GetAllLocationResponse'
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get All Locations
+      tags:
+      - Locations
+    post:
+      consumes:
+      - application/json
+      description: Create a new location with latitude and longitude. If no address
+        is provided, it will be fetched using the coordinates.
+      parameters:
+      - description: Create
+        in: body
+        name: Create
+        required: true
+        schema:
+          $ref: '#/definitions/genprotos.CreateLocationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/genprotos.CreateLocationResponse'
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create Location
+      tags:
+      - Locations
+  /location/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a location by its ID
+      parameters:
+      - description: Location ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete Location
+      tags:
+      - Locations
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a location by its ID
+      parameters:
+      - description: Location ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/genprotos.GetLocationByIdResponse'
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get Location by ID
+      tags:
+      - Locations
+  /review:
+    post:
+      consumes:
+      - application/json
+      description: Create a new review for a business by a user
+      parameters:
+      - description: Create Review
+        in: body
+        name: Create
+        required: true
+        schema:
+          $ref: '#/definitions/genprotos.CreateReviewRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            $ref: '#/definitions/genprotos.CreateReviewResponse'
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create Review
+      tags:
+      - Reviews
+  /review/{business_id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all reviews for a specific business
+      parameters:
+      - description: Business ID
+        in: path
+        name: business_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/genprotos.GetReviewByBusinessIdResponse'
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get Reviews by Business ID
+      tags:
+      - Reviews
+  /review/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a review by ID
+      parameters:
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: string
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete Review
+      tags:
+      - Reviews
+    put:
+      consumes:
+      - application/json
+      description: Update an existing review by ID
+      parameters:
+      - description: Update Review
+        in: body
+        name: Update
+        required: true
+        schema:
+          $ref: '#/definitions/genprotos.UpdateReviewRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/genprotos.UpdateReviewResponse'
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update Review
+      tags:
+      - Reviews
+  /review/user/{user_id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all reviews written by the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/genprotos.GetOwnReviewsResponse'
+        "400":
+          description: Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get Own Reviews
+      tags:
+      - Reviews
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

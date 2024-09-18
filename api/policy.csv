@@ -1,0 +1,40 @@
+    p, admin, /business, POST
+    p, admin, /business/:id, PUT
+    p, admin, /business/:id, DELETE
+    p, admin, /business/:id, GET
+    p, admin, /business/all, GET
+
+    p, admin, /bookmarked-business, POST
+    p, admin, /bookmarked-business/:id, DELETE
+    p, admin, /bookmarked-business/:id, GET
+    p, admin, /bookmarked-business/all, GET
+
+    p, admin, /business-photo, POST
+    p, admin, /business-photo/:id, DELETE
+    p, admin, /business-photo/:businessId, GET
+    p, admin, /business-photo/:id, GET
+
+    p, admin, /location, POST
+    p, admin, /location/:id, DELETE
+    p, admin, /location, GET
+    p, admin, /location/:id, GET
+
+
+    p, admin, /review, POST
+    p, admin, /review/:id, PUT
+    p, admin, /review/:id, DELETE
+    p, admin, /review/user/:user_id, GET
+    p, admin, /review/:id, GET
+    p, admin, /review/:business_id, GET
+
+
+    p, unauthorized, /api/swagger/index.html, GET
+    p, unauthorized, /api/swagger/swagger-ui.css, GET
+    p, unauthorized, /api/swagger/swagger-ui-bundle.js, GET
+    p, unauthorized, /api/swagger/favicon-32x32.png, GET
+    p, unauthorized, /api/swagger/favicon-16x16.png, GET
+    p, unauthorized, /api/swagger/swagger-ui-standalone-preset.js, GET
+    p, unauthorized, /api/swagger/swagger/doc.json, GET
+    p, unauthorized, /api/swagger/doc.json, GET
+    p, unauthorized, /api/swagger/*any, GET
+    g, admin, user
